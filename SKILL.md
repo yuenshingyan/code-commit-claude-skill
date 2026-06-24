@@ -1,5 +1,5 @@
 ---
-name: commit-per-file
+name: code-commit
 description: >-
   Create one git commit per changed file with an auto-generated message
   that matches the repo's existing style. No Co-Authored-By, no Claude
@@ -23,7 +23,7 @@ disallowed-tools:
   - Agent
 ---
 
-# commit-per-file
+# code-commit
 
 One commit per file. Message matches the target repo's existing style. Never adds attribution trailers.
 

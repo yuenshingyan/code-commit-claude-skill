@@ -1,4 +1,4 @@
-# commit-per-file
+# code-commit
 
 A Claude Code skill that creates one git commit per changed file with an auto-generated message matching the repo's existing style. No Co-Authored-By trailers, no Claude attribution.
 
