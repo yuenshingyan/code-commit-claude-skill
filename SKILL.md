@@ -1,6 +1,26 @@
 ---
 name: commit-per-file
-description: Create one git commit per changed file with an auto-generated message that matches the repo's style. No Co-Authored-By, no Claude attribution. TRIGGER when the user asks to "commit each file separately", "one commit per file", "one msg for one file", "commit without using your name", "separate commits", "per-file commits", "commit files individually", or similar per-file commit patterns.
+description: >-
+  Create one git commit per changed file with an auto-generated message
+  that matches the repo's existing style. No Co-Authored-By, no Claude
+  attribution.
+when_to_use: >-
+  TRIGGER when the user asks to "commit each file separately",
+  "one commit per file", "one msg for one file",
+  "commit without using your name", "separate commits",
+  "per-file commits", "commit files individually",
+  or similar per-file commit patterns.
+disable-model-invocation: true
+effort: max
+allowed-tools:
+  - Bash(git status *)
+  - Bash(git diff *)
+  - Bash(git log *)
+  - Bash(git add *)
+  - Bash(git commit *)
+  - Read
+disallowed-tools:
+  - Agent
 ---
 
 # commit-per-file
