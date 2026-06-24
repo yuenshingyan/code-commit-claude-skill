@@ -1,6 +1,6 @@
 ---
 name: commit-per-file
-description: Create one git commit per changed file with an auto-generated message that matches the repo's style. No Co-Authored-By, no Claude attribution. TRIGGER when the user asks to "commit each file separately", "one commit per file", "one msg for one file", "commit without using your name", "separate commits", "per-file commits", "commit files individually", or similar per-file commit patterns. Works across multiple repos in one workspace.
+description: Create one git commit per changed file with an auto-generated message that matches the repo's style. No Co-Authored-By, no Claude attribution. TRIGGER when the user asks to "commit each file separately", "one commit per file", "one msg for one file", "commit without using your name", "separate commits", "per-file commits", "commit files individually", or similar per-file commit patterns.
 ---
 
 # commit-per-file
@@ -23,7 +23,7 @@ If they want a single bundled commit, use the normal commit flow instead.
 
 ## Procedure
 
-1. **Find every repo with changes.** A workspace may contain multiple repos side by side. Run `git status --short` in each. `cd` persists between Bash calls — one `cd` per repo is enough, or use `git -C <repo>`.
+1. **Find changes in the current repo only.** Run `git status --short` in the primary working directory. Do not scan or commit in other repos, even if additional working directories are configured.
 
 2. **Sanity check.** If more than 20 files are changed, confirm with the user before proceeding — they may prefer grouped commits instead.
 
@@ -56,7 +56,7 @@ If they want a single bundled commit, use the normal commit flow instead.
 
 5. **Prefer committing new files before files that reference them** so each commit is independently valid where possible.
 
-6. **After all commits, verify each repo is clean** with `git status --short`. Report resulting commit hashes and messages, grouped by repo.
+6. **After all commits, verify the repo is clean** with `git status --short`. Report resulting commit hashes and messages.
 
 ## Message rules
 
@@ -73,10 +73,6 @@ If they want a single bundled commit, use the normal commit flow instead.
 - **No `--force`, no `--amend`, no destructive flags** unless explicitly requested.
 - **Don't push.** Committing only.
 - **Don't edit git config.**
-
-## Multi-repo workspaces
-
-Each repo's commits stay within that repo. Don't mix paths across repos in one `git add`/`commit` pair. Use `git -C <repo>` or a deliberate `cd` between repos.
 
 ## What this skill does NOT do
 
