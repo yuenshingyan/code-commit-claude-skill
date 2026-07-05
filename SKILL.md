@@ -13,12 +13,11 @@ when_to_use: >-
 disable-model-invocation: true
 effort: max
 allowed-tools:
-  - Bash(git status *)
-  - Bash(git diff *)
-  - Bash(git log *)
-  - Bash(git add *)
-  - Bash(git commit *)
-  - Read
+  - Bash(git status:*)
+  - Bash(git diff:*)
+  - Bash(git log:*)
+  - Bash(git add:*)
+  - Bash(git commit:*)
 disallowed-tools:
   - Agent
 ---
@@ -60,11 +59,13 @@ If they want a single bundled commit, use the normal commit flow instead.
    a. **Read the diff:**
       - Tracked, unstaged changes: `git diff -- <path>`
       - Already-staged changes: `git diff --cached -- <path>`
-      - New untracked files: read the file directly.
+      - New untracked files: `git diff --no-index -- /dev/null <path>` shows the full file as an added diff. (It exits 1 when the file has content — that is expected, not an error.)
       - Binary files (images, fonts, etc.): no meaningful diff — describe the action (add/update/remove) and the filename.
       - Renames: `git status` shows `R old -> new`. Stage both paths: `git add -- <old> <new>`.
 
       Never guess the contents.
+
+      If a hunk is ambiguous on its own, get more context of *that same file* via git — `git diff --function-context -- <path>` or `git diff -U30 -- <path>` — or check how past commits to it were worded with `git log --oneline -- <path>`. Do not open other files.
 
    b. Draft a concise one-line subject (≤ 72 chars) describing *what changed in that file*, matching the repo's style. Each commit stands alone — don't narrate the broader task.
 
@@ -77,6 +78,12 @@ If they want a single bundled commit, use the normal commit flow instead.
 5. **Prefer committing new files before files that reference them** so each commit is independently valid where possible.
 
 6. **After all commits, verify the repo is clean** with `git status --short`. Report resulting commit hashes and messages.
+
+## Read scope
+
+- **The per-file diff is the sole source of truth** for each commit message. Do not open any other file "for context".
+- Only inspect paths that `git status --short` listed as changed.
+- Do not explore the repo structure or read configs, READMEs, or related source files. Commit-message style comes from `git log --oneline --no-merges -10` only.
 
 ## Message rules
 
